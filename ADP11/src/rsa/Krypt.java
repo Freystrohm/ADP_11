@@ -13,6 +13,20 @@ public class Krypt {
 			+ "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem."
 			+ "\nNulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.";
 
+	public void setHauptmodul(int N)
+	{
+		hauptmodul = N;
+	}
+	public void setE(int e)
+	{
+		this.e= e;
+	}
+	
+	public void setN(int n)
+	{
+		this.n= n;
+	}
+	
 	public void genererateKeys() {
 		p = getPrim();
 		q = getPrim();
