@@ -6,50 +6,41 @@ package rsa;
 
 import aufg2_primzahlen.Primzahlsuche;
 
-public class Krypt
-{
+public class Krypt {
 	public int e, n, hauptmodul, nebenmodul;
-	public int q,p;
+	public int q, p;
 	private String testString = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. \n"
 			+ "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem."
 			+ "\nNulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.";
-	public void genererateKeys()
-	{
-		p = getPrim(); q = getPrim();
+
+	public void genererateKeys() {
+		p = getPrim();
+		q = getPrim();
 		hauptmodul = p * q;
 		nebenmodul = (p - 1) * (q - 1);
 		e = (int) (Math.random() * nebenmodul);
-		if (e <= 1)
-		{
+		if (e <= 1) {
 			e = 2;
 		}
-		while (ExtEuklid.extEuklid(e, nebenmodul) != 1)
-		{
+		while (ExtEuklid.extEuklid(e, nebenmodul) != 1) {
 			e++;
 		}
 		n = ExtEuklid.d;
-		if(n<0)
-		{
+		if (n < 0) {
 			genererateKeys();
-		}
-		else if(!entschluesseln(verschluesseln(testString)).equals(testString))
-		{
+		} else if (!entschluesseln(verschluesseln(testString)).equals(testString)) {
 			genererateKeys();
 		}
 	}
 
-	private int getPrim()
-	{
+	private int getPrim() {
 		int p = 0;
-		while (p < 100)
-		{
+		while (p < 100) {
 			p = (int) (Math.random() * 500);
 		}
-		while (!Primzahlsuche.istPrimzahl(p))
-		{
+		while (!Primzahlsuche.istPrimzahl(p)) {
 			p++;
-			if (p > 500)
-			{
+			if (p > 500) {
 				p = 100;
 			}
 
@@ -57,23 +48,19 @@ public class Krypt
 		return p;
 	}
 
-	public int[] verschluesseln(String s)
-	{
+	public int[] verschluesseln(String s) {
 		char[] array = new char[s.length()];
 		int[] intarray = new int[s.length()];
 		s.getChars(0, s.length(), array, 0);
 		String eBin = Integer.toBinaryString(e);
 
-		for (int i = 0; i < array.length; i++)
-		{
+		for (int i = 0; i < array.length; i++) {
 			int a = array[i];
 			long res = 1;
 
-			for (int j = 0; j < eBin.length(); j++)
-			{
+			for (int j = 0; j < eBin.length(); j++) {
 				res = res * res;
-				if (eBin.charAt(j) == '1')
-				{
+				if (eBin.charAt(j) == '1') {
 					res *= a;
 				}
 				res = res % hauptmodul;
@@ -83,29 +70,66 @@ public class Krypt
 
 		return intarray;
 	}
-	
-	public String entschluesseln(int[] s)
-	{
+
+	public String entschluesseln(int[] s) {
 		String nBin = Integer.toBinaryString(n);
 		char[] array = new char[s.length];
-		
-		for (int i = 0; i < s.length; i++)
-		{
+
+		for (int i = 0; i < s.length; i++) {
 			int a = s[i];
 			long res = 1;
 
-			for (int j = 0; j < nBin.length(); j++)
-			{
+			for (int j = 0; j < nBin.length(); j++) {
 				res = res * res;
-				if (nBin.charAt(j) == '1')
-				{
+				if (nBin.charAt(j) == '1') {
 					res *= a;
 				}
 				res = res % hauptmodul;
 			}
 			array[i] = (char) res;
 		}
-		
+
 		return new String(array);
 	}
+
+	public int decryptAndEncrypt(int wert, int exp, int modul) {
+		int erg = 1;
+		for (int i = 0; i < exp; i++) {
+			erg = (wert * erg) % modul;
+		}
+		return erg;
+	}
+
+	public int decrypt(int wert, int exp, int modul) {
+		return decryptAndEncrypt(wert, exp, modul);
+	}
+
+	public int encrypt(int wert, int exp, int modul) {
+		return decryptAndEncrypt(wert, exp, modul);
+	}
+
+	public int getHauptmodul() {
+		return hauptmodul;
+	}
+
+	public int getQ() {
+		return q;
+	}
+
+	public int getP() {
+		return p;
+	}
+
+	public int getE() {
+		return e;
+	}
+
+	public int getN() {
+		return n;
+	}
+
+	public int getNebenmodul() {
+		return nebenmodul;
+	}
+
 }
