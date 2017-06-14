@@ -45,27 +45,25 @@ public class BlockChiffre
     {
         char charKryptArray[] = toDecrypt.toCharArray();
         int intKryptArray[] = new int[toDecrypt.length()];
+        int s0 = charKryptArray[0];
+        int s1 = charKryptArray[1];
 
         for (int i = 0; i < charKryptArray.length; i++)
         {
             intKryptArray[i] = charKryptArray[i] - 32;
         }
 
-        int s0 = intKryptArray[0];
-        int s1 = intKryptArray[1];
+//        int s0 = intKryptArray[0];
+//        int s1 = intKryptArray[1];
         char charClearArray[] = new char[intKryptArray.length - 8];
 
-        for (int i = 0; i < charClearArray.length - 1; i += 2)
+        for (int i = 0; i < charClearArray.length-1; i += 2)
         {
-            if (s0 > intKryptArray[i + 8])
-                charClearArray[i] = (char) (intKryptArray[i + 8] + 95 - s0 + 32);
-            else
-                charClearArray[i] = (char) (intKryptArray[i + 8] - s0 + 32);
-
-            if (s1 > intKryptArray[i + 1 + 8])
-                charClearArray[i + 1] = (char) (intKryptArray[i + 1 + 8] + 95 - s1 + 32);
-            else
-                charClearArray[i + 1] = (char) (intKryptArray[i + 1 + 8] - s1 + 32);
+                charClearArray[i] =(char) ((intKryptArray[i + 8] + 95 - s0)%95);
+                charClearArray[i] = (char) (charClearArray[i]+ 32);
+                
+                charClearArray[i+1] =(char) ((intKryptArray[i+1 + 8] + 95 - s1)%95);
+                charClearArray[i+1] = (char) (charClearArray[i+1]+ 32);
         }
 
         if (intKryptArray.length % 2 != 0)

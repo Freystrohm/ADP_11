@@ -37,6 +37,7 @@ public class HybridVerfahren {
 			array[i / 4] = (int) ((c[i] - ASCI) * Math.pow(95, 3) + (c[i + 1] - ASCI) * Math.pow(95, 2)
 					+ (c[i + 2] - ASCI) * 95 + (c[i + 3] - ASCI));
 		}
+		System.out.println(array[0] +" mark "+ array[1]);
 		return rsa.entschluesseln(array);
 	}
 
@@ -127,11 +128,13 @@ public class HybridVerfahren {
 		}
 
 		s = rsaentschluesseln(s).toCharArray();
+		
+		System.out.println("s0:"+(int) s[0]+" s1:"+ (int)s[1]);
 
-		String.copyValueOf(charKryptArray, 8, charKryptArray.length - 8);
-
+		String test = String.copyValueOf(charKryptArray, 8, charKryptArray.length - 8);
+		test = String.copyValueOf(s)+ "345678" + String.copyValueOf(charKryptArray, 8, charKryptArray.length - 8);
 		return symmetric.decryptString(
-				String.copyValueOf(s) + String.copyValueOf(charKryptArray, 8, charKryptArray.length - 8));
+				String.copyValueOf(s)+ "345678" + String.copyValueOf(charKryptArray, 8, charKryptArray.length - 8));
 
 		// int[] intKryptArray = new int[charKryptArray.length];
 		// for (int i = 0; i < charKryptArray.length; i++) {
@@ -182,9 +185,12 @@ public class HybridVerfahren {
 		sessionKey_1 += (intKryptArray[5] * 95 * 95) % (95 * 95 * 95);
 		sessionKey_1 += (intKryptArray[4] * 95 * 95 * 95);
 
+		System.out.println(sessionKey_0 +" "+ sessionKey_1);
+		
 		int s0 = rsa.decrypt(sessionKey_0, d, hauptmodul);
 		int s1 = rsa.decrypt(sessionKey_1, d, hauptmodul);
 
+		System.out.println("s0:"+s0+" s1:"+s1);
 		intKryptArray[0] = s0;
 		intKryptArray[1] = s1;
 
